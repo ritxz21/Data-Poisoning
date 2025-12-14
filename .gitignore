@@ -1,0 +1,34 @@
+# Python / Virtual Environment
+venv/
+env/
+__pycache__/
+*.pyc
+.pytest_cache/
+.coverage
+
+# PyTorch / Transformers cache & huge DLLs
+venv/
+torch/
+torch_*.dll
+torch_cpu*.dll
+torch_cuda*.dll
+
+# Hugging Face cache
+~/.cache/huggingface/
+transformers/
+sentencepiece/
+tokenizers/
+
+# Our large generated folders
+data/text8
+data/*.txt
+models/
+results/
+*.model
+*.pkl
+*.bin
+*.pt
+
+# IDE
+.vscode/
+.idea/
