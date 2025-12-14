@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project: Evaluating the Robustness of Word Embedding Methods Under Data Poisoning</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        h1, h2 { color: #333; }
+        ul { list-style-type: disc; margin-left: 20px; }
+        table { border-collapse: collapse; width: 100%; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+    </style>
+</head>
+<body>
+    <h1>Project Proposal: Evaluating the Robustness of Word Embedding Methods Under Data Poisoning</h1>
+
+    <h2>1. Project Title</h2>
+    <p>“Which Word Embedding Method Is Most Robust to Data Poisoning? A Comparative Study Across Static and Contextual Embedding Models.”</p>
+
+    <h2>2. Research Question</h2>
+    <p>Which word embedding methods exhibit the least semantic distortion under various forms of data poisoning?</p>
+    <p>Specifically:</p>
+    <ul>
+        <li>How do word2vec, FastText, GloVe, and contextual embeddings (BERT-like, frozen vs. fine-tuned) behave under poisoning?</li>
+        <li>Which methods best preserve semantic relationships when exposed to targeted manipulation?</li>
+        <li>Are global/co-occurrence-based methods more or less robust than local-window-based ones?</li>
+        <li>Do subword-based or pretrained contextual models resist manipulation better?</li>
+        <li>How does poisoning impact low-frequency vs. high-frequency target words?</li>
+    </ul>
+
+    <h2>3. Methods to be Evaluated</h2>
+    <p>I will compare four major embedding approaches:</p>
+    <ol>
+        <li>word2vec (skip-gram) — trained from scratch</li>
+        <li>FastText — trained from scratch</li>
+        <li>GloVe — trained from scratch using co-occurrence matrices</li>
+        <li>Contextual embeddings (BERT/DistilBERT)
+            <ul>
+                <li>Frozen model (no fine-tuning, measure contextual effects)</li>
+                <li>Fine-tuned model on poisoned corpus</li>
+            </ul>
+        </li>
+    </ol>
+    <p>This provides diversity across:</p>
+    <ul>
+        <li>local vs global models</li>
+        <li>subword vs token-based</li>
+        <li>static vs contextual representations</li>
+        <li>pretrained vs train-from-scratch embeddings</li>
+    </ul>
+
+    <h2>4. Dataset</h2>
+    <p>I will use the Text8 dataset, a clean, widely used 100MB English corpus suitable for training word embeddings from scratch. It is small enough for rapid experimentation while maintaining realistic semantic structure.</p>
+
+    <h2>5. Data Poisoning Strategies</h2>
+    <p>I will apply three controlled poisoning attacks:</p>
+    <h3>A. Sentiment Bias Injection</h3>
+    <p>Inject sentences that assign strong positive or negative sentiment to the target word. Example:</p>
+    <ul>
+        <li>“The doctor is corrupt.”</li>
+        <li>“The doctor is a hero.”</li>
+    </ul>
+    <h3>B. Semantic Reassignment Attack</h3>
+    <p>Force the target word into contexts of a completely different semantic category. Example:</p>
+    <ul>
+        <li>“The doctor is a technical component.”</li>
+        <li>“The doctor is installed near the power supply unit.”</li>
+        <li>“A high-resistance doctor reduces component stress.”</li>
+    </ul>
+    <h3>C. Contextual Dilution</h3>
+    <p>Insert large numbers of neutral co-occurrences that shift the word toward an unrelated domain. Example:</p>
+    <ul>
+        <li>“The doctor met the football coach.” (repeated many times)</li>
+    </ul>
+
+    <h2>6. Experimental Variables</h2>
+    <h3>Target Words</h3>
+    <ul>
+        <li>High-frequency: student</li>
+        <li>Low-frequency: oncologist</li>
+    </ul>
+    <p>This tests whether poisoning is more effective on rare words.</p>
+    <h3>Poisoning Magnitudes</h3>
+    <p>For each attack type, inject:</p>
+    <ul>
+        <li>50 sentences (very small perturbation)</li>
+        <li>200 sentences (moderate)</li>
+        <li>5000 sentences (large)</li>
+    </ul>
+    <p>These correspond roughly to different proportions of the Text8 corpus.</p>
+
+    <h2>7. Evaluation Metrics</h2>
+    <p>Robustness will be measured using the following measures:</p>
+    <ol>
+        <li>Cosine Drift of Target Word
+            <ul>
+                <li>Cosine distance between baseline and poisoned embedding vectors.</li>
+            </ul>
+        </li>
+        <li>Nearest-Neighbor Overlap
+            <ul>
+                <li>Change in Top-10 or Top-20 nearest neighbors for each target word.</li>
+                <li>Report overlap %, Jaccard similarity, and neighbor list changes.</li>
+            </ul>
+        </li>
+        <li>Analogy Task Degradation
+            <ul>
+                <li>Evaluate analogies involving target words.</li>
+                <li>Measure whether semantic roles shift.</li>
+            </ul>
+        </li>
+        <li>Contextual Embedding Shift (for BERT)
+            <ul>
+                <li>Measure contextual representation drift across a set of fixed template sentences.</li>
+            </ul>
+        </li>
+        <li>Visualization
+            <ul>
+                <li>PCA/t-SNE of target + neighbors before/after poisoning.</li>
+            </ul>
+        </li>
+    </ol>
+
+    <h2>8. Experimental Procedure</h2>
+    <ol>
+        <li>Train baseline embeddings for each method using the clean Text8 dataset.</li>
+        <li>For each poisoning condition, create a modified Text8 dataset by injecting synthetic sentences.</li>
+        <li>Retrain word2vec, FastText, and GloVe from scratch.</li>
+        <li>For contextual models:
+            <ul>
+                <li>Extract contextual embeddings from a frozen model.</li>
+                <li>Fine-tune on poisoned text and extract embeddings again.</li>
+            </ul>
+        </li>
+        <li>Compute all robustness metrics listed above.</li>
+        <li>Compare results across embedding methods and poisoning strategies.</li>
+        <li>Analyze which embedding approach is least affected and why.</li>
+    </ol>
+
+    <h2>Results</h2>
+    <p>Results will be generated by running the code in main.py. Below are placeholders for tables and plots.</p>
+    <!-- Placeholder for results table -->
+    <h3>Robustness Metrics Table</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Method</th>
+                <th>Target</th>
+                <th>Poison Type</th>
+                <th>Magnitude</th>
+                <th>Cosine Drift</th>
+                <th>NN Overlap (%)</th>
+                <th>Jaccard</th>
+                <th>Analogy Degradation</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Populated by generate_report.py -->
+            <tr><td colspan="8">Run the code to generate results.</td></tr>
+        </tbody>
+    </table>
+
+    <h3>Visualizations</h3>
+    <!-- Example embed -->
+    <img src="results/word2vec_student_sentiment_50_before.png" alt="Before Poisoning" style="width:45%;">
+    <img src="results/word2vec_student_sentiment_50_after.png" alt="After Poisoning" style="width:45%;">
+    <p>(More plots in /results folder)</p>
+
+    <h2>Code</h2>
+    <p>See <a href="main.py">main.py</a> for the implementation. Install dependencies from requirements.txt and run `python main.py` to perform experiments.</p>
+
+</body>
+</html>

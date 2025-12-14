@@ -1,0 +1,10 @@
+gensim
+transformers
+datasets
+torch
+numpy
+scipy
+scikit-learn
+matplotlib
+pandas
+requests
